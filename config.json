@@ -1,0 +1,122 @@
+{
+  "seed": 42,
+  "data": {
+    "height": 768,
+    "width": 1024,
+    "expected_per_class": 800,
+    "expected_original_size": [
+      2048,
+      1536
+    ],
+    "split": [
+      0.7,
+      0.15,
+      0.15
+    ],
+    "grayscale_3ch": true,
+    "interpolation": "bilinear",
+    "antialias": true,
+    "root": "ZdraviBolesni",
+    "manifest": "manifest.csv",
+    "class_names": [
+      "Zdravi",
+      "CRC"
+    ],
+    "pos_class": "CRC",
+    "imagenet_normalize": false,
+    "hflip_train_only": true
+  },
+  "model": {
+    "backbone": "tf_efficientnet_b3.in1k",
+    "pretrained": true,
+    "dropout": 0.3,
+    "drop_path_rate": 0.0,
+    "grad_checkpointing": true
+  },
+  "training": {
+    "batch_size": 8,
+    "grad_accum_steps": 4,
+    "num_workers": 4,
+    "lr": 0.0001,
+    "weight_decay": 0.0001,
+    "epochs": 30,
+    "warmup_epochs": 2,
+    "label_smoothing": 0.1,
+    "early_stopping_patience": 5,
+    "min_delta": 1e-06,
+    "amp_fp16": true,
+    "mirror_views": true,
+    "oversample_factor": 1.25,
+    "balance_exact_per_epoch": true,
+    "deterministic_algorithms": true,
+    "optimizer": "adamw",
+    "scheduler": "cosine",
+    "early_stopping_metric": "val_loss",
+    "sampler": "class_balanced_replacement"
+  },
+  "evaluation": {
+    "threshold": "youden_validation",
+    "youden_tie_break": "highest_finite_threshold",
+    "training_metrics_mode": "train",
+    "training_metrics_seed_offset": 10000,
+    "prevalences": {
+      "balanced": 0.5,
+      "uk_40_69": 0.005,
+      "uk_60_69": 0.012
+    },
+    "threshold_selection": "youden_on_val"
+  },
+  "baseline": {
+    "holdout": "shared_imaging_test",
+    "fit_splits": [
+      "train",
+      "val"
+    ],
+    "scale_age_only": true,
+    "C": 1.0,
+    "folds": 5,
+    "cv_population": "all_complete_cases",
+    "cv_sd_ddof": 0
+  },
+  "statistics": {
+    "fdr_family": [
+      "age",
+      "sex",
+      "bmi",
+      "smoking",
+      "alcohol",
+      "diabetes",
+      "vascular"
+    ],
+    "fisher_exact_max_tables": 10000000
+  },
+  "explainability": {
+    "split": "test",
+    "limit_per_class": null,
+    "occlusion_target": "crc",
+    "patch": 96,
+    "stride": 48,
+    "baseline": 0.0,
+    "gradcam_target": "predicted",
+    "gradcam_layer": "conv_head",
+    "fundus_threshold_8bit": 8,
+    "mask_source": "external_or_largest_component",
+    "macular_center_xy": [
+      0.5,
+      0.5
+    ],
+    "macular_radius_min_dimension": 0.2,
+    "disc_center_xy": [
+      0.82,
+      0.5
+    ],
+    "peripapillary_radii_min_dimension": [
+      0.06,
+      0.16
+    ],
+    "save_individual": true,
+    "occlusion_batch_size": 8
+  },
+  "experiment_name": "eksperiment27",
+  "output_dir": "eksperiment27"
+}
